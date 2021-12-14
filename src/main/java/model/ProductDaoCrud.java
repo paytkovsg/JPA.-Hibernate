@@ -22,10 +22,7 @@ public class ProductDaoCrud implements ProductDao{
         Product product;
         try (Session session = factory.getCurrentSession()){
             session.getTransaction().begin();
-
             product = session.get(Product.class, id);
-            System.out.println(product);
-
             session.getTransaction().commit();
         }
         return product;
@@ -33,23 +30,25 @@ public class ProductDaoCrud implements ProductDao{
 
     @Override
     public List<Product> findAll() {
+        List<Product> products;
         try (Session session = factory.getCurrentSession()){
             session.getTransaction().begin();
-            var products = session
+            products = session
                     .createQuery("select p from Product p", Product.class)
                     .getResultList();
-            products.forEach(System.out::println);
             session.getTransaction().commit();
         }
-        return null;
+        return products;
     }
 
     @Override
     public void deleteById(Long id) {
+
         try (Session session = factory.getCurrentSession()){
             session.getTransaction().begin();
-            Product product = session.get(Product.class, id);
-            session.delete(product);
+            session.createQuery("delete from Product p where p.id =:id")
+                    .setParameter("id", id)
+                    .executeUpdate();
             session.getTransaction().commit();
 
         }

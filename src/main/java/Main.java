@@ -19,22 +19,22 @@ public class Main {
 
         ProductDao productDao = new ProductDaoCrud(sessionFactory);
 
-        productDao.findById(3L);
+        System.out.println(productDao.findById(3L));
+        System.out.println("--------");
+
+        productDao.findAll().forEach(System.out::println);
 
         System.out.println("--------");
 
-        productDao.findAll();
-
-        System.out.println("--------");
-//        productDao.deleteById(2L);
-        productDao.findAll();
+        productDao.deleteById(2L);
+        productDao.findAll().forEach(System.out::println);
         System.out.println("--------");
         Product p  = new Product();
         p.setId(4L);
         p.setTitle("Монитор");
         p.setPrice(30);
         productDao.saveOrUpdate(p);
-        productDao.findAll();
+        productDao.findAll().forEach(System.out::println);
         sessionFactory.close();
     }
 }
